@@ -1,0 +1,2 @@
+ADD_SUBDIRECTORY(mips)
+ADD_SUBDIRECTORY(simplemodel)

@@ -1,0 +1,17 @@
+SET(SRCS
+    search_static_plugins.cpp
+)
+
+INCLUDE_DIRECTORIES(
+    ${POCO_INCLUDE_PATH}
+)
+LINK_DIRECTORIES( ${POCO_LIBRARY_PATH} )
+LINK_LIBRARIES( PocoFoundation PocoUtil )
+ADD_EXECUTABLE( search_static_plugins
+    ${SRCS}
+)
+
+SET_TARGET_PROPERTIES( search_static_plugins
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+

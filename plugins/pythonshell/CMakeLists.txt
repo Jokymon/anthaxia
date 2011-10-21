@@ -1,0 +1,36 @@
+INCLUDE(FindPythonLibs)
+
+SET(PYTHON_SHELL
+    PythonShell.cpp
+    PythonShell.h
+    pyservicesystem.c
+    pyservicesystem.h
+)
+
+INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}
+    ${POCO_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_PATH}
+)
+
+LINK_LIBRARIES(
+    ${PYTHON_LIBRARIES}
+)
+
+ADD_LIBRARY( pythonshell SHARED ${PYTHON_SHELL} )
+IF(NOT UNIX) # Windows MS VC compiler specific
+    SET_TARGET_PROPERTIES( pythonshell PROPERTIES PREFIX "" )
+    SET_TARGET_PROPERTIES( pythonshell PROPERTIES LINK_FLAGS "-L${CMAKE_BINARY_DIR}" )
+    TARGET_LINK_LIBRARIES( pythonshell procsim.dll )
+    ADD_DEPENDENCIES(pythonshell procsim )
+ENDIF()
+
+SET_TARGET_PROPERTIES( pythonshell PROPERTIES
+    COMPILE_FLAGS "-I${CMAKE_SOURCE_DIR}/include -DBUILD_DLL"
+
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/plugins
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/plugins
+)
+
+
+
