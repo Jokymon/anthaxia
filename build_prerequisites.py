@@ -25,6 +25,10 @@ build_environment = {
         { "cmake_generator" : "Unix Makefiles",
           "build_command"   : "make",
         },
+    "Linux" :
+        { "cmake_generator" : "Unix Makefiles",
+          "build_command"   : "make",
+        },
 }
 
 def detect_build_environment():
@@ -36,6 +40,8 @@ def detect_build_environment():
             return "MinGW"
         if os.path.exists( cygwin ):
             return "Cygwin"
+        if os.name=="posix":
+            return "Linux"
     return None
 
 def find_cmake():
