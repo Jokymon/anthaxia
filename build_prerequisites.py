@@ -20,14 +20,20 @@ build_environment = {
     "MinGW" :
         { "cmake_generator" : "MinGW Makefiles", 
           "build_command"   : "mingw32-make",
+          "lib_suffix"      : "dll",
+          "lib_suffix2"     : "dll.a",
         },
     "Cygwin" :
         { "cmake_generator" : "Unix Makefiles",
           "build_command"   : "make",
+          "lib_suffix"      : "so",
+          "lib_suffix2"     : "so.13",
         },
     "Linux" :
         { "cmake_generator" : "Unix Makefiles",
           "build_command"   : "make",
+          "lib_suffix"      : "so",
+          "lib_suffix2"     : "so.13",
         },
 }
 
@@ -45,6 +51,7 @@ def detect_build_environment():
     return None
 
 def find_cmake():
+    # TODO: Either make sure CMake is 2.6.2 (as required by GTest) or even 2.8 as required by Poco or patch the CMakeLists files
     paths=[
         "C:\\Program Files\\CMake 2.6\\bin",
         "C:\\Program Files\\CMake 2.8\\bin",
@@ -59,7 +66,7 @@ def copy_tree(src_dir, dst_dir, action=lambda src, tgt: None, filt=lambda file_n
     import os.path, shutil
     from distutils.dir_util import mkpath
     if not os.path.isdir(src_dir) or not os.path.isdir(dst_dir):
-        raise IOException("Source and Destination must be directories")
+        raise IOError("Source and Destination must be directories")
     for root, dirs, files in os.walk(src_dir):
         common_prefix = os.path.commonprefix([src_dir, root])
         target_path = os.path.join( dst_dir, root[len(common_prefix)+1:] )
@@ -98,50 +105,50 @@ def install_poco(build_env):
     print "Installing Poco..."
     from distutils.dir_util import mkpath
     import shutil
-    if not os.path.exists("..\\..\\packages\\lib"):
-        mkpath("..\\..\\packages\\lib")
-    if not os.path.exists("..\\..\\packages\\include"):
-        mkpath("..\\..\\packages\\include")
+    if not os.path.exists("../../packages/lib"):
+        mkpath("../../packages/lib")
+    if not os.path.exists("../../packages/include"):
+        mkpath("../../packages/include")
 
     print "  installing Foundation"
-    copy_tree("..\\Foundation\\include", "..\\..\\packages\\include", 
+    copy_tree("../Foundation/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
-    shutil.copy2("Foundation\\libPocoFoundation.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Foundation\\libPocoFoundation.dll.a", "..\\..\\packages\\lib")
-    shutil.copy2("Foundation\\libPocoFoundationd.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Foundation\\libPocoFoundationd.dll.a", "..\\..\\packages\\lib")
+    shutil.copy2("Foundation/libPocoFoundation." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Foundation/libPocoFoundation." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
+    shutil.copy2("Foundation/libPocoFoundationd." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Foundation/libPocoFoundationd." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
     print "  installing Data"
-    copy_tree("..\\Data\\include", "..\\..\\packages\\include", 
+    copy_tree("../Data/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
-    shutil.copy2("Data\\libPocoData.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Data\\libPocoData.dll.a", "..\\..\\packages\\lib")
-    shutil.copy2("Data\\libPocoDatad.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Data\\libPocoDatad.dll.a", "..\\..\\packages\\lib")
+    shutil.copy2("Data/libPocoData." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Data/libPocoData." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
+    shutil.copy2("Data/libPocoDatad." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Data/libPocoDatad." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
     print "  installing Util"
-    copy_tree("..\\Util\\include", "..\\..\\packages\\include", 
+    copy_tree("../Util/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
-    shutil.copy2("Util\\libPocoUtil.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Util\\libPocoUtil.dll.a", "..\\..\\packages\\lib")
-    shutil.copy2("Util\\libPocoUtild.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Util\\libPocoUtild.dll.a", "..\\..\\packages\\lib")
+    shutil.copy2("Util/libPocoUtil." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Util/libPocoUtil." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
+    shutil.copy2("Util/libPocoUtild." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Util/libPocoUtild." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
     print "  installing Net"
-    copy_tree("..\\Net\\include", "..\\..\\packages\\include", 
+    copy_tree("../Net/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
-    shutil.copy2("Net\\libPocoNet.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Net\\libPocoNet.dll.a", "..\\..\\packages\\lib")
-    shutil.copy2("Net\\libPocoNetd.dll", "..\\..\\packages\\lib")
-    shutil.copy2("Net\\libPocoNetd.dll.a", "..\\..\\packages\\lib")
+    shutil.copy2("Net/libPocoNet." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Net/libPocoNet." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
+    shutil.copy2("Net/libPocoNetd." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("Net/libPocoNetd." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
     print "  installing XML"
-    copy_tree("..\\XML\\include", "..\\..\\packages\\include", 
+    copy_tree("../XML/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
-    shutil.copy2("XML\\libPocoXML.dll", "..\\..\\packages\\lib")
-    shutil.copy2("XML\\libPocoXML.dll.a", "..\\..\\packages\\lib")
-    shutil.copy2("XML\\libPocoXMLd.dll", "..\\..\\packages\\lib")
-    shutil.copy2("XML\\libPocoXMLd.dll.a", "..\\..\\packages\\lib")
+    shutil.copy2("XML/libPocoXML." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("XML/libPocoXML." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
+    shutil.copy2("XML/libPocoXMLd." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
+    shutil.copy2("XML/libPocoXMLd." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
     os.chdir( current_dir )
 
@@ -153,6 +160,7 @@ def install_gmock(build_env):
     zf = zipfile.ZipFile( "gmock.zip", "r" )
     for n in zf.namelist():
         print n
+        # TODO: Implement a more Python 2.5 friendly version
         zf.extract( n )
 
     print "Compiling GMock..."
@@ -172,17 +180,17 @@ def install_gmock(build_env):
     print "Installing GMock..."
     from distutils.dir_util import mkpath
     import shutil
-    if not os.path.exists("..\\..\\packages\\lib"):
-        mkpath("..\\..\\packages\\lib")
-    if not os.path.exists("..\\..\\packages\\include"):
-        mkpath("..\\..\\packages\\include")
+    if not os.path.exists("../../packages/lib"):
+        mkpath("../../packages/lib")
+    if not os.path.exists("../../packages/include"):
+        mkpath("../../packages/include")
 
-    copy_tree("..\\include", "..\\..\\packages\\include")
-    shutil.copy2("libgmock.a", "..\\..\\packages\\lib")
-    shutil.copy2("libgmock_main.a", "..\\..\\packages\\lib")
-    copy_tree("..\\gtest\\include", "..\\..\\packages\\include")
-    shutil.copy2("gtest\\libgtest.a", "..\\..\packages\\lib")
-    shutil.copy2("gtest\\libgtest_main.a", "..\\..\packages\\lib")
+    copy_tree("../include", "../../packages/include")
+    shutil.copy2("libgmock.a", "../../packages/lib")
+    shutil.copy2("libgmock_main.a", "../../packages/lib")
+    copy_tree("../gtest/include", "../../packages/include")
+    shutil.copy2("gtest/libgtest.a", "../../packages/lib")
+    shutil.copy2("gtest/libgtest_main.a", "../../packages/lib")
 
     os.chdir( current_dir )
 
