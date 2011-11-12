@@ -67,7 +67,7 @@ def copy_tree(src_dir, dst_dir, action=lambda src, tgt: None, filt=lambda file_n
 
 # -----------------------------------------------------------------------------
 
-def install_poco():
+def install_poco(build_env):
     import pysvn, subprocess
     def notify( event_dict ):
         print event_dict["path"]
@@ -84,8 +84,8 @@ def install_poco():
     if not os.path.exists( "build_dir" ):
         os.mkdir( "build_dir" )
     os.chdir( "build_dir" )
-    subprocess.call(["%s" % os.path.join(cmake_path, "cmake"), "-G", build_environment["MinGW"]["cmake_generator"], ".."])
-    os.system( build_environment["MinGW"]["build_command"] )
+    subprocess.call(["%s" % os.path.join(cmake_path, "cmake"), "-G", build_environment[build_env]["cmake_generator"], ".."])
+    os.system( build_environment[build_env]["build_command"] )
 
     print "Installing Poco..."
     from distutils.dir_util import mkpath
@@ -137,7 +137,7 @@ def install_poco():
 
     os.chdir( current_dir )
 
-def install_gmock():
+def install_gmock(build_env):
     import urllib, zipfile, subprocess
 
     print "Downloading GMock..."
@@ -156,10 +156,10 @@ def install_gmock():
     os.chdir( "build_dir" )
     subprocess.call(
         ["%s" % os.path.join(cmake_path, "cmake"), 
-         "-G", build_environment["MinGW"]["cmake_generator"], 
+         "-G", build_environment[build_env]["cmake_generator"], 
          "-Dgtest_disable_pthreads=1",
          ".."])
-    os.system( build_environment["MinGW"]["build_command"] )
+    os.system( build_environment[build_env]["build_command"] )
 
     print "Installing GMock..."
     from distutils.dir_util import mkpath
@@ -179,5 +179,6 @@ def install_gmock():
     os.chdir( current_dir )
 
 if __name__=="__main__":
-    install_poco()
-    install_gmock()
+    build_env = detect_build_environment()
+    install_poco(build_env)
+    install_gmock(build_env)
