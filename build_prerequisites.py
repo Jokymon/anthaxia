@@ -46,6 +46,8 @@ def find_cmake():
     for p in paths:
         if os.path.exists(p):
             return p
+    if os.path.exists("/usr/bin/cmake"):
+        return "/usr/bin"
 
 def copy_tree(src_dir, dst_dir, action=lambda src, tgt: None, filt=lambda file_name: True):
     import os.path, shutil
