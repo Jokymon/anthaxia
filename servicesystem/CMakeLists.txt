@@ -1,4 +1,4 @@
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
 
 SET(SERVICESYSTEM_SRCS
     marshalling.c
