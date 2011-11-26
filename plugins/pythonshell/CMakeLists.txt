@@ -26,6 +26,10 @@ IF(NOT UNIX) # Windows MS VC compiler specific
     ADD_DEPENDENCIES(pythonshell procsim )
 ENDIF()
 
+IF(WIN32)
+TARGET_LINK_LIBRARIES( pythonshell ${POCO_LIBRARY_PATH}/libPocoFoundation.dll )
+ENDIF()
+
 SET_TARGET_PROPERTIES( pythonshell PROPERTIES
     COMPILE_FLAGS "-DBUILD_DLL"
 
