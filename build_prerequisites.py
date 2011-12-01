@@ -52,15 +52,20 @@ def detect_build_environment():
 
 def find_cmake():
     # TODO: Either make sure CMake is 2.6.2 (as required by GTest) or even 2.8 as required by Poco or patch the CMakeLists files
-    paths=[
-        "C:\\Program Files\\CMake 2.6\\bin",
-        "C:\\Program Files\\CMake 2.8\\bin",
-    ]
+    import os
+    paths = []
+    if os.name=='nt':
+        paths = [
+            os.path.join( os.environ["ProgramFiles"], "CMake 2.8", "bin", "cmake.exe" ),
+            os.path.join( os.environ["ProgramFiles"], "CMake 2.6", "bin", "cmake.exe" ),
+        ]
+    else:
+        paths = [
+            "/usr/bin/cmake",
+        ]
     for p in paths:
         if os.path.exists(p):
             return p
-    if os.path.exists("/usr/bin/cmake"):
-        return "/usr/bin"
     raise IOError("Couldn't find cmake executable")
 
 def copy_tree(src_dir, dst_dir, action=lambda src, tgt: None, filt=lambda file_name: True):
@@ -94,13 +99,14 @@ def install_poco(build_env):
     s.checkout( "http://poco.svn.sourceforge.net/svnroot/poco/poco/trunk/", config["poco_checkout_dir"], revision=pysvn.Revision( pysvn.opt_revision_kind.number, 1676 ) )
 
     print "Compiling Poco..."
-    cmake_path = find_cmake()
+    cmake_executable = find_cmake()
     current_dir = os.getcwd()
     os.chdir( config["poco_checkout_dir"] )
     if not os.path.exists( "build_dir" ):
         os.mkdir( "build_dir" )
     os.chdir( "build_dir" )
-    subprocess.call(["%s" % os.path.join(cmake_path, "cmake"), "-G", build_environment[build_env]["cmake_generator"], ".."])
+    # TODO: Add error handling; no need to continue here if the build fails
+    subprocess.call(["%s" % cmake_executable, "-G", build_environment[build_env]["cmake_generator"], ".."])
     os.system( build_environment[build_env]["build_command"] )
 
     print "Installing Poco..."
@@ -165,14 +171,14 @@ def install_gmock(build_env):
         zf.extract( n )
 
     print "Compiling GMock..."
-    cmake_path = find_cmake()
+    cmake_executable = find_cmake()
     current_dir = os.getcwd()
     os.chdir( config["gmock_unzip_dir"] )
     if not os.path.exists( "build_dir" ):
         os.mkdir( "build_dir" )
     os.chdir( "build_dir" )
     subprocess.call(
-        ["%s" % os.path.join(cmake_path, "cmake"), 
+        ["%s" % cmake_executable, 
          "-G", build_environment[build_env]["cmake_generator"], 
          "-Dgtest_disable_pthreads=1",
          ".."])
