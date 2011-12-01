@@ -1,53 +1,64 @@
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TextTestRunner.h>
+#include "servicesystem/servicesystem.h"
+#include "servicesystem/serviceprovider.h"
+
 #include "AdderService.hpp"
-#include "test_servicesystem.h"
+#include "gtest/gtest.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ServiceSystemTest );
+namespace {
 
-void ServiceSystemTest::setUp()
+class TestServiceSystem : public ::testing::Test 
 {
-    srvsys = ServiceSystem::getServiceSystem();
-}
+protected:
+    TestServiceSystem() 
+    { }
 
-void ServiceSystemTest::tearDown()
-{
-}
+    virtual void SetUp()
+    {
+        srvsys = ServiceSystem::getServiceSystem();
+    }
 
-void ServiceSystemTest::testEmptyServiceRegistry()
+    virtual void TearDown()
+    { }
+
+    ServiceSystem* srvsys;
+};
+
+TEST_F(TestServiceSystem, EmptyServiceRegistry)
 {
-    CPPUNIT_ASSERT(srvsys!=NULL);
+    ASSERT_TRUE(srvsys!=NULL);
     // Test the plain C interface
-    CPPUNIT_ASSERT(get_service("test_service") == NULL);
+    ASSERT_TRUE(get_service("test_service") == NULL);
     // and the CPP interface
-    CPPUNIT_ASSERT(srvsys->getService("test_service") == NULL);
+    ASSERT_TRUE(srvsys->getService("test_service") == NULL);
 }
 
-void ServiceSystemTest::testServiceRegistration()
+}
+
+TEST_F(TestServiceSystem, ServiceRegistration)
 {
-    CPPUNIT_ASSERT(srvsys!=NULL);
+    ASSERT_TRUE(srvsys!=NULL);
     AdderService* adder_srv = new AdderService();
     // Register the new service
     srvsys->registerService("adder_service", adder_srv);
     // This should now be available
-    CPPUNIT_ASSERT(srvsys->getService("adder_service") == adder_srv);
+    ASSERT_TRUE(srvsys->getService("adder_service") == adder_srv);
 
     // Test unregistering
     srvsys->unregisterService("adder_service");
     // The service should not be available anymore
-    CPPUNIT_ASSERT(srvsys->getService("adder_service") == NULL);
+    ASSERT_TRUE(srvsys->getService("adder_service") == NULL);
 }
 
-void ServiceSystemTest::testUsingService()
+TEST_F(TestServiceSystem, UsingService)
 {
-    CPPUNIT_ASSERT(srvsys!=NULL);
+    ASSERT_TRUE(srvsys!=NULL);
     // Register the service
     AdderService* adder_srv = new AdderService();
     srvsys->registerService("adder_service", adder_srv);
 
     // Use the service
     ProxyObject po_adder = get_service("adder_service");
-    CPPUNIT_ASSERT(po_adder!=NULL);
+    ASSERT_TRUE(po_adder!=NULL);
 
     MarshaledData* args = create_method_call();
     MarshaledData* result;
@@ -56,11 +67,11 @@ void ServiceSystemTest::testUsingService()
     CallResult res = call_method(po_adder, (char*)"add", args, &result);
 
     // Extract result
-    CPPUNIT_ASSERT(res==CALL_OK);
+    ASSERT_TRUE(res==CALL_OK);
     MarshallParser* parser = create_parser(result);
     int result_value;
-    CPPUNIT_ASSERT(parse_int(parser, &result_value)==PARSING_OK);
-    CPPUNIT_ASSERT(result_value==42);
+    ASSERT_TRUE(parse_int(parser, &result_value)==PARSING_OK);
+    ASSERT_TRUE(result_value==42);
 
     // Cleanup
     free_parser(parser);
@@ -69,16 +80,16 @@ void ServiceSystemTest::testUsingService()
     srvsys->unregisterService("adder_service");
 }
 
-void ServiceSystemTest::testNonexistentMethod()
+TEST_F(TestServiceSystem, NonexistentMethod)
 {
-    CPPUNIT_ASSERT(srvsys!=NULL);
+    ASSERT_TRUE(srvsys!=NULL);
     // Register the service
     AdderService* adder_srv = new AdderService();
     srvsys->registerService("adder_service", adder_srv);
 
     // Use the service
     ProxyObject po_adder = get_service("adder_service");
-    CPPUNIT_ASSERT(po_adder!=NULL);
+    ASSERT_TRUE(po_adder!=NULL);
 
     MarshaledData* args = create_method_call();
     MarshaledData* result = NULL;
@@ -88,8 +99,8 @@ void ServiceSystemTest::testNonexistentMethod()
 
     // This is a somehow stupid test as the return value is produced by the
     // AdderService object that is part of the test code
-    CPPUNIT_ASSERT(res==CALL_UNKNOWN_NAME);
-    CPPUNIT_ASSERT(result==NULL);
+    ASSERT_TRUE(res==CALL_UNKNOWN_NAME);
+    ASSERT_TRUE(result==NULL);
     free_method_call(args);
 
     args = create_method_call();
@@ -98,20 +109,11 @@ void ServiceSystemTest::testNonexistentMethod()
 
     // This is a somehow stupid test as the return value is produced by the
     // AdderService object that is part of the test code
-    CPPUNIT_ASSERT(res==CALL_UNKNOWN_SIGNATURE);
-    CPPUNIT_ASSERT(result==NULL);
+    ASSERT_TRUE(res==CALL_UNKNOWN_SIGNATURE);
+    ASSERT_TRUE(result==NULL);
 
     // Cleanup
     free_method_call(args);
     srvsys->unregisterService("adder_service");
 }
 
-int main(int argc, char* argv[]) {
-    CppUnit::Test* test =
-        CppUnit::TestFactoryRegistry::getRegistry().makeTest();
-    CppUnit::TextTestRunner runner;
-    runner.addTest(test);
-
-    bool wasSuccessful = runner.run();
-    return !wasSuccessful;  // inverted because of command.com has different meaning
-}

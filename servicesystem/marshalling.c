@@ -128,7 +128,7 @@ void free_parser(MarshallParser* parser)
 
 ServiceTypes get_next_type(MarshallParser* parser)
 {
-    if (parser->typelistposition -  parser->method->typelist > parser->method->typelistsize)
+    if (parser->typelistposition -  parser->method->typelist >= parser->method->typelistsize)
         return TYPE_NONE;
     switch (*parser->typelistposition)
     {
