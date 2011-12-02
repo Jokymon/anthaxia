@@ -3,6 +3,7 @@
 
 #include "PsModelControl.h"
 #include <QMainWindow>
+#include "model/ModelControl.h"
 
 class QAction;
 class QLabel;
@@ -16,7 +17,7 @@ class PsMainWindow : public QMainWindow
 Q_OBJECT
 
 public:
-    PsMainWindow();
+    PsMainWindow(ModelControl& mc);
     virtual ~PsMainWindow();
 
 private slots:

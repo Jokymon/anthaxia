@@ -1,5 +1,4 @@
 #include "ModelControlService.h"
-#include "model/ModelControl.h"
 #include "string.h"
 #include "stdlib.h"
 
@@ -27,16 +26,14 @@ CallResult ModelControlService::callMethod(char* method, MarshaledData* argument
     if (strncmp(method, "getPC", 5)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        int intresult = modelControl->getPC();
+        int intresult = modelControl.getPC();
         /* Create result marshall */
         *result = create_method_call();
         append_int(*result, intresult);
     } else if (strncmp(method, "getRegisterCount", 16)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        int intresult = modelControl->getRegisterCount();
+        int intresult = modelControl.getRegisterCount();
         /* Create result marshall */
         *result = create_method_call();
         append_int(*result, intresult);
@@ -51,9 +48,8 @@ CallResult ModelControlService::callMethod(char* method, MarshaledData* argument
                 call_result = CALL_MARSHALLING_ERROR;
                 goto clean_up;
             }
-            ModelControl* modelControl = ModelControl::getInstance();
             int intresult;
-            bool success = modelControl->getRegister(param1, intresult);
+            bool success = modelControl.getRegister(param1, intresult);
             *result = create_method_call();
             if (success)
             {
@@ -76,8 +72,7 @@ CallResult ModelControlService::callMethod(char* method, MarshaledData* argument
                 call_result = CALL_MARSHALLING_ERROR;
                 goto clean_up;
             }
-            ModelControl* modelControl = ModelControl::getInstance();
-            bool success = modelControl->setRegister(param1, param2);
+            bool success = modelControl.setRegister(param1, param2);
             /* Create result marshall */
             *result = create_method_call();
             append_int(*result, (int)success);
@@ -85,29 +80,25 @@ CallResult ModelControlService::callMethod(char* method, MarshaledData* argument
     } else if (strncmp(method, "start", 5)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        modelControl->startSimulation();
+        modelControl.startSimulation();
         *result = create_method_call();
         // append nothing, return value is void
     } else if (strncmp(method, "step", 4)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        modelControl->stepSimulation();
+        modelControl.stepSimulation();
         *result = create_method_call();
         // append nothing, return value is void
     } else if (strncmp(method, "stop", 4)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        modelControl->stopSimulation();
+        modelControl.stopSimulation();
         *result = create_method_call();
         // append nothing, return value is void
     } else if (strncmp(method, "reset", 5)==0)
     {
         call_result = CALL_OK;
-        ModelControl* modelControl = ModelControl::getInstance();
-        modelControl->resetSimulation();
+        modelControl.resetSimulation();
         *result = create_method_call();
         // append nothing, return value is void
     } else if (strncmp(method, "loadImage", 9)==0)
@@ -121,8 +112,7 @@ CallResult ModelControlService::callMethod(char* method, MarshaledData* argument
                 call_result = CALL_MARSHALLING_ERROR;
                 goto clean_up;
             }
-            ModelControl* modelControl = ModelControl::getInstance();
-            modelControl->loadImage(std::string(param1));
+            modelControl.loadImage(std::string(param1));
             *result = create_method_call();
         }
     }
@@ -132,10 +122,10 @@ clean_up:
     return call_result;
 }
 
-void registerModelControlService()
+void registerModelControlService(ModelControl& mc)
 {
     ServiceSystem* sys = ServiceSystem::getServiceSystem();
-    ModelControlService* mcs = new ModelControlService();
+    ModelControlService* mcs = new ModelControlService(mc);
     sys->registerService("modelcontrol", mcs);
 }
 

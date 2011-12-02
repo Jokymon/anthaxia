@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <string>
+#include "model/ModelControl.h"
 
 class QApplication;
 class PsMainWindow;
@@ -17,7 +18,7 @@ public:
 
     void parseArgs(int &argc, char **argv);
 
-    void install();
+    void install(ModelControl& mc);
     void loop();
     void uninstall();
 

@@ -8,17 +8,7 @@
 
 #include <iostream>
 
-ModelControl* ModelControl::pInstance = 0;
 DEFINE_STATIC_LOGGER("core.ModelControl");
-
-ModelControl* ModelControl::getInstance()
-{
-    if (pInstance == 0)
-    {
-        pInstance = new ModelControl;
-    }
-    return pInstance;
-}
 
 ModelControl::ModelControl()
 : mModel(0)

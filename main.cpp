@@ -48,13 +48,15 @@ int main(int argc, char *argv[])
 	configurator.configure(pConfig);
 
     PluginManager::init(theUI.getApplicationDirPath());
-    // Make sure the model control is instantiated
-    (void)ModelControl::getInstance();
+    
+    // Instantiate the model control object of the application
+    ModelControl modelControl;
+
     // Make sure the service system is present
     (void)ServiceSystem::getServiceSystem();
-    registerModelControlService();
+    registerModelControlService(modelControl);
 
-    theUI.install();
+    theUI.install(modelControl);
     theUI.loop();
     theUI.uninstall();
 

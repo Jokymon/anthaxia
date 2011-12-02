@@ -12,6 +12,9 @@ class ProcessorControlUpdateInterface;
 class ModelControl
 {
 public:
+    ModelControl();
+    ~ModelControl();
+
     void loadModel(const std::string& modelname);
     std::vector<std::string> getProcessorList() const;
 
@@ -43,17 +46,11 @@ public:
     MemoryByteInterface* getByteInterfaceByIndex(int index);
     MemoryWordInterface* getWordInterfaceByIndex(int index);
 
-    static ModelControl* getInstance();
-
 private:
     ProcessorControl* mModel;
     std::vector<ProcessorControlUpdateInterface*> mProcessorControlObservers;
 
-    ModelControl();
-    ~ModelControl();
     void notifyModelChanged(ProcessorControl* newModel);
-
-    static ModelControl* pInstance;
 };
 
 #endif

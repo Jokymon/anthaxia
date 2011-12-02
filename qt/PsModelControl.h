@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QStringList>
 #include "sigslot/sigslot.h"
+#include "model/ModelControl.h"
 #include "plugins/processor/ProcessorControlUpdateInterface.h"
 
 class MemoryByteInterface;
@@ -14,7 +15,7 @@ class PsModelControl : public QObject, public ProcessorControlUpdateInterface, p
 {
 Q_OBJECT
 public:
-    PsModelControl();
+    PsModelControl(ModelControl& mc);
     ~PsModelControl();
 
     void loadModel(const QString& modelname);
@@ -59,7 +60,7 @@ public slots:
     void stopSimulation();
     void resetSimulation();
 private:
-    ModelControl* mModelControl;
+    ModelControl& mModelControl;
 };
 
 #endif

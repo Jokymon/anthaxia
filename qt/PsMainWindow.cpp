@@ -33,8 +33,9 @@ public:
     }
 };
 
-PsMainWindow::PsMainWindow()
+PsMainWindow::PsMainWindow(ModelControl& mc)
 : QMainWindow(0)
+, mModelControl(mc)
 {
     // TODO: load a particular processor model based on settings and/or users
     // selection

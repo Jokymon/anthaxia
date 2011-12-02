@@ -15,9 +15,11 @@ void PsUI::parseArgs(int &argc, char **argv)
     mApp = new QApplication(argc, argv);
 }
 
-void PsUI::install()
+// TODO: Passing the Modelcontrol down two levels here is rather ugly, I think
+// we can move the UI code into the main application or an application class
+void PsUI::install(ModelControl& mc)
 {
-    mMainWindow = new PsMainWindow();
+    mMainWindow = new PsMainWindow(mc);
     mMainWindow->show();
 }
 
