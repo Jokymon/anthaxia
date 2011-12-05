@@ -33,6 +33,11 @@ SET(CORE_SRCS
     main.cpp
     model/ModelControl.cpp
     model/ModelControl.h
+    model/SimulationObject.cpp
+    model/SimulationObject.h
+    model/SimulationObjectVisitor.cpp
+    model/SystemOnChip.cpp
+    model/SystemOnChip.h
     platform/DynamicLibrary.h
 
     plugins/PluginManager.cpp

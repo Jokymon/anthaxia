@@ -18,8 +18,4 @@ SimulationObject* SimulationObject::find(std::string name)
 {
 }
 
-bool SimulationObject::appendChild(SimulationObject* child)
-{
-    return false;
-}
 

@@ -5,12 +5,15 @@
 #include <string>
 #include <vector>
 
-enum SimulationObjectTypes { 
+enum SimulationObjectTypes {
+    SO_SOC,
     SO_PROCESSOR,
     SO_BREAKPOINTS,
-    SO_REGISTERS,
+    SO_REGISTERBANK,
     SO_MEMORY,
 };
+
+class SimulationObjectVisitor;
 
 class SimulationObject
 {
@@ -21,7 +24,9 @@ public:
     SimulationObjectTypes getObjectType();
 
     SimulationObject* find(std::string name);
-    bool appendChild(SimulationObject* child);
+
+// visitor support functions
+    virtual void accept(SimulationObjectVisitor& visitor) =0;
 
 public: // signals
     sigslot::signal0<> ObjectDestroyed;
