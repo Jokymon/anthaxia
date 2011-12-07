@@ -1,7 +1,7 @@
 #include "SimulationObject.h"
 
-SimulationObject::SimulationObject(std::string _name, SimulationObjectTypes _type)
-: name(_name), object_type(_type)
+SimulationObject::SimulationObject(std::string _name, SimulationObjectTypes _type, SimulationObject* _parent)
+: name(_name), object_type(_type), parent(_parent)
 { }
 
 std::string SimulationObject::getName()
@@ -18,4 +18,8 @@ SimulationObject* SimulationObject::find(std::string name)
 {
 }
 
+SimulationObject* SimulationObject::getParent()
+{
+    return parent;
+}
 

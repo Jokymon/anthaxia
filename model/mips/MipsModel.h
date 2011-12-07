@@ -113,6 +113,12 @@ public:
     void registerMemoryObserver(MemoryObserver* observer);
     void transactionComplete();
 
+    ////////////////////////////////////
+    // Simulation model tree functions
+    ////////////////////////////////////
+    virtual int childCount();
+    virtual SimulationObject* getChild(int index);
+
 private:
     enum {
         IST_J      = 2,

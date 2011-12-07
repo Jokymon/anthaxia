@@ -6,7 +6,7 @@
 class SystemOnChip : public SimulationObject
 {
 public:
-    SystemOnChip(std::string _name);
+    SystemOnChip(std::string _name, SimulationObject* _parent);
 
     virtual void accept(SimulationObjectVisitor& visitor);
 };

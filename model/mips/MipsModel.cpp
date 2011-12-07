@@ -130,7 +130,7 @@ static std::string _registerNames[34] = {
 };
 
 MipsModel::MipsModel()
-: SystemOnChip("MipsModel")
+: SystemOnChip("MipsModel", NULL)
 , mSimThread(new SimulatorThread(this))
 {
     _reset();
@@ -1114,6 +1114,16 @@ void MipsModel::notifyMemoryChanged()
 void MipsModel::transactionComplete()
 {
     this->notifyMemoryChanged();
+}
+
+int MipsModel::childCount()
+{
+    return 0;
+}
+
+SimulationObject* MipsModel::getChild(int index)
+{
+    return NULL;
 }
 
 class MipsModelFactory : public ProcessorControlFactory
