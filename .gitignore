@@ -1,0 +1,6 @@
+build_mingw/
+gmock-1.6.0/
+gmock.zip
+packages/
+poco_checkout/
+*.swp
