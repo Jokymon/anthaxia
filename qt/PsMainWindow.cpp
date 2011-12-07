@@ -205,6 +205,13 @@ void PsMainWindow::createDockWidgets()
 {
     addRegisterViewDockWidget();
     addConsoleDockWidget();
+
+    // TODO: once this is more clear, move it to a dedicated function
+    QDockWidget* modelDockWidget = new QDockWidget(tr("Model Tree"), this);
+    modelDockWidget->setObjectName("model_tree_view");
+    QTreeView* qtv = new QTreeView(modelDockWidget);
+    modelDockWidget->setWidget(qtv);
+    addDockWidget(Qt::LeftDockWidgetArea, modelDockWidget);
 }
 
 void PsMainWindow::addMemoryViewDockWidget()

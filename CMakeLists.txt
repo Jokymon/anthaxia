@@ -104,6 +104,7 @@ SET(UI_SRCS
     qt/PsPluginInfoDlg.cpp
     qt/PsProcChooserDlg.cpp
     qt/PsRegisterView.cpp
+    qt/PsSimulationModel.cpp
 
     qt/PsUI.h
     qt/PsMainWindow.h
@@ -113,6 +114,7 @@ SET(UI_SRCS
     qt/PsPluginInfoDlg.h
     qt/PsProcChooserDlg.h
     qt/PsRegisterView.h
+    qt/PsSimulationModel.h
 
     qt/console/interceptor.cpp
     #qt/console/pymemoryproxy.cpp
