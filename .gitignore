@@ -1,5 +1,6 @@
 *.swp
 gmock.zip
-packages
-gmock-1.6.0
-poco_checkout
+build_mingw/
+packages/
+gmock-1.6.0/
+poco_checkout/
