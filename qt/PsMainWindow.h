@@ -39,9 +39,6 @@ private:
     void createMainWidget();
     void createDockWidgets();
 
-private slots:
-    void registerChanged(QTableWidgetItem* item);
-
 private:
     QWidget* mMainWidget;
 

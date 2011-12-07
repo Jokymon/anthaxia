@@ -199,6 +199,15 @@ void PsMainWindow::createMainWidget()
     Q_ASSERT(0!=mModelControl.getWordInterfaceByIndex(0));
     mMainWidget = new PsMemView(this, &mModelControl, mModelControl.getWordInterfaceByIndex(0), PsMemView::RootWindow);
     setCentralWidget(mMainWidget);
+
+    QDockWidget* qtvDock = new QDockWidget(tr("Simulation Model"), this);
+    QTreeWidget* qtv = new QTreeWidget(qtvDock);
+    qtv->setHeaderLabel("Model elements");
+    qtvDock->setWidget(qtv);
+    addDockWidget(Qt::LeftDockWidgetArea, qtvDock);
+
+    QTreeWidgetItem* item1 = new QTreeWidgetItem(QStringList("SoC"), QTreeWidgetItem::Type);
+    qtv->insertTopLevelItem(0, item1);
 }
 
 void PsMainWindow::createDockWidgets()
@@ -278,13 +287,6 @@ void PsMainWindow::handleShowPluginInfo()
 {
     PsPluginInfoDlg dialog(0);
     (void)dialog.exec();
-}
-
-void PsMainWindow::registerChanged(QTableWidgetItem* item)
-{
-    // TODO: only the register content column should be changeable
-    // TODO: the changes made to the register should be valid hex/dec numbers
-    mModelControl.setRegister(item->row(), item->text().toInt());
 }
 
 #include "PsMainWindow.moc"
