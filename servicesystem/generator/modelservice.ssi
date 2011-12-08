@@ -1,0 +1,11 @@
+class ModelControlService
+    getPC() : int
+    getRegister(int) : int
+    setRegister(int, int) : int
+    getRegisterCount() : int
+    start() : void
+    step() : void
+    stop() : void
+    reset() : void
+    loadImage(string) : void
+end
