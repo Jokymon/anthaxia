@@ -1116,6 +1116,11 @@ void MipsModel::transactionComplete()
     this->notifyMemoryChanged();
 }
 
+int MipsModel::parentIndex()
+{
+    return 0;
+}
+
 int MipsModel::childCount()
 {
     return 0;

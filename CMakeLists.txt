@@ -132,6 +132,7 @@ SET(UI_SRCS
     ${CMAKE_BINARY_DIR}/PsRegisterView.moc
     ${CMAKE_BINARY_DIR}/PsPluginInfoDlg.moc
     ${CMAKE_BINARY_DIR}/PsProcChooserDlg.moc
+    ${CMAKE_BINARY_DIR}/PsSimulationModel.moc
 
     ${CMAKE_BINARY_DIR}/interceptor.moc
     ${CMAKE_BINARY_DIR}/qpluginconsole.moc
@@ -155,6 +156,7 @@ QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsModelControl.h    ${CMAKE_BINARY_DIR}/
 QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsRegisterView.h    ${CMAKE_BINARY_DIR}/PsRegisterView.moc)
 QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsPluginInfoDlg.h   ${CMAKE_BINARY_DIR}/PsPluginInfoDlg.moc)
 QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsProcChooserDlg.h  ${CMAKE_BINARY_DIR}/PsProcChooserDlg.moc)
+QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsSimulationModel.h ${CMAKE_BINARY_DIR}/PsSimulationModel.moc)
 
 QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/console/interceptor.h   ${CMAKE_BINARY_DIR}/interceptor.moc)
 QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/console/qpluginconsole.h      ${CMAKE_BINARY_DIR}/qpluginconsole.moc)

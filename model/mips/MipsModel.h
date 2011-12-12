@@ -116,6 +116,7 @@ public:
     ////////////////////////////////////
     // Simulation model tree functions
     ////////////////////////////////////
+    virtual int parentIndex();
     virtual int childCount();
     virtual SimulationObject* getChild(int index);
 

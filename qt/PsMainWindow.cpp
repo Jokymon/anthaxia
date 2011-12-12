@@ -3,6 +3,7 @@
 #include "PsPluginInfoDlg.h"
 #include "PsProcChooserDlg.h"
 #include "PsRegisterView.h"
+#include "PsSimulationModel.h"
 #include "Logging/Logging.h"
 #include "Settings/Settings.h"
 #include "console/qpluginconsole.h"
@@ -199,15 +200,6 @@ void PsMainWindow::createMainWidget()
     Q_ASSERT(0!=mModelControl.getWordInterfaceByIndex(0));
     mMainWidget = new PsMemView(this, &mModelControl, mModelControl.getWordInterfaceByIndex(0), PsMemView::RootWindow);
     setCentralWidget(mMainWidget);
-
-    QDockWidget* qtvDock = new QDockWidget(tr("Simulation Model"), this);
-    QTreeWidget* qtv = new QTreeWidget(qtvDock);
-    qtv->setHeaderLabel("Model elements");
-    qtvDock->setWidget(qtv);
-    addDockWidget(Qt::LeftDockWidgetArea, qtvDock);
-
-    QTreeWidgetItem* item1 = new QTreeWidgetItem(QStringList("SoC"), QTreeWidgetItem::Type);
-    qtv->insertTopLevelItem(0, item1);
 }
 
 void PsMainWindow::createDockWidgets()
@@ -218,7 +210,12 @@ void PsMainWindow::createDockWidgets()
     // TODO: once this is more clear, move it to a dedicated function
     QDockWidget* modelDockWidget = new QDockWidget(tr("Model Tree"), this);
     modelDockWidget->setObjectName("model_tree_view");
+
     QTreeView* qtv = new QTreeView(modelDockWidget);
+    qtv->setHeaderHidden(true);
+    PsSimulationModel* model = new PsSimulationModel;
+    qtv->setModel(model);
+
     modelDockWidget->setWidget(qtv);
     addDockWidget(Qt::LeftDockWidgetArea, modelDockWidget);
 }

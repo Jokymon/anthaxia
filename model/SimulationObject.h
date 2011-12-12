@@ -26,8 +26,9 @@ public:
     SimulationObject* find(std::string name);
 
     SimulationObject* getParent();
-    virtual int childCount() =0;
+    virtual int parentIndex() =0;
     virtual SimulationObject* getChild(int index) =0;
+    virtual int childCount() =0;
 
 // visitor support functions
     virtual void accept(SimulationObjectVisitor& visitor) =0;
