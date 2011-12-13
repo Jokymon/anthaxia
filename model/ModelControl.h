@@ -46,6 +46,8 @@ public:
     MemoryByteInterface* getByteInterfaceByIndex(int index);
     MemoryWordInterface* getWordInterfaceByIndex(int index);
 
+    ProcessorControl* getProcessor();
+
 private:
     ProcessorControl* mModel;
     std::vector<ProcessorControlUpdateInterface*> mProcessorControlObservers;

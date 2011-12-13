@@ -178,4 +178,9 @@ MemoryWordInterface* PsModelControl::getWordInterfaceByIndex(int index)
     return mModelControl.getWordInterfaceByIndex(index);
 }
 
+ProcessorControl* PsModelControl::getProcessor()
+{
+    return mModelControl.getProcessor();
+}
+
 #include "PsModelControl.moc"

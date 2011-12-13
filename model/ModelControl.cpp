@@ -259,3 +259,7 @@ MemoryWordInterface* ModelControl::getWordInterfaceByIndex(int index)
         return 0;
 }
 
+ProcessorControl* ModelControl::getProcessor()
+{
+    return mModel;
+}

@@ -49,6 +49,8 @@ public:
     MemoryByteInterface* getByteInterfaceByIndex(int index);
     MemoryWordInterface* getWordInterfaceByIndex(int index);
 
+    ProcessorControl* getProcessor();
+
 signals:
     void simulationStarted();
     void simulationStopped();
