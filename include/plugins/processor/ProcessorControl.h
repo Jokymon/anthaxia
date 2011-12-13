@@ -3,6 +3,7 @@
 
 #include "sigslot/sigslot.h"
 #include "plugins/Plugin.h"
+#include "model/Processor.h"
 #include <string>
 #include <vector>
 
@@ -10,9 +11,10 @@ class MemoryByteInterface;
 class MemoryWordInterface;
 class SimulationObserver;
 
-class ProcessorControl
+class ProcessorControl : public Processor
 {
 public:
+    ProcessorControl() : Processor("test", NULL) {}
     ///////////////////////////////////////
     // Simulation control interface
     ///////////////////////////////////////

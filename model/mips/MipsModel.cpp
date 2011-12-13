@@ -130,8 +130,7 @@ static std::string _registerNames[34] = {
 };
 
 MipsModel::MipsModel()
-: SystemOnChip("MipsModel", NULL)
-, mSimThread(new SimulatorThread(this))
+: mSimThread(new SimulatorThread(this))
 {
     _reset();
     for (int i=0; i<65536; i++)

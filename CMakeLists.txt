@@ -38,6 +38,8 @@ SET(CORE_SRCS
     model/SimulationObjectVisitor.cpp
     model/SystemOnChip.cpp
     model/SystemOnChip.h
+    model/Processor.cpp
+    model/Processor.h
     platform/DynamicLibrary.h
 
     plugins/PluginManager.cpp

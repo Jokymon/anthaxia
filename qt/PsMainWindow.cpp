@@ -206,18 +206,7 @@ void PsMainWindow::createDockWidgets()
 {
     addRegisterViewDockWidget();
     addConsoleDockWidget();
-
-    // TODO: once this is more clear, move it to a dedicated function
-    QDockWidget* modelDockWidget = new QDockWidget(tr("Model Tree"), this);
-    modelDockWidget->setObjectName("model_tree_view");
-
-    QTreeView* qtv = new QTreeView(modelDockWidget);
-    qtv->setHeaderHidden(true);
-    PsSimulationModel* model = new PsSimulationModel;
-    qtv->setModel(model);
-
-    modelDockWidget->setWidget(qtv);
-    addDockWidget(Qt::LeftDockWidgetArea, modelDockWidget);
+    addModelTreeWidget();
 }
 
 void PsMainWindow::addMemoryViewDockWidget()
@@ -249,6 +238,21 @@ void PsMainWindow::addConsoleDockWidget()
     consoleDockWidget->setWidget(console);
     consoleDockWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     addDockWidget(Qt::BottomDockWidgetArea, consoleDockWidget);
+}
+
+void PsMainWindow::addModelTreeWidget()
+{
+    QDockWidget* modelDockWidget = new QDockWidget(tr("Model Tree"), this);
+    modelDockWidget->setObjectName("model_tree_view");
+
+    QTreeView* qtv = new QTreeView(modelDockWidget);
+    qtv->setHeaderHidden(true);
+    PsSimulationModel* model = new PsSimulationModel;
+    //model->setRootObject(mips);
+    qtv->setModel(model);
+
+    modelDockWidget->setWidget(qtv);
+    addDockWidget(Qt::LeftDockWidgetArea, modelDockWidget);
 }
 
 void PsMainWindow::handleSimulationStarted()

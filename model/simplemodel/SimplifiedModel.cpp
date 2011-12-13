@@ -645,6 +645,21 @@ void SimplifiedModel::executeInstruction()
     this->mPC = nextPC;
 }
 
+int SimplifiedModel::parentIndex()
+{
+    return 0;
+}
+
+int SimplifiedModel::childCount()
+{
+    return 0;
+}
+
+SimulationObject* SimplifiedModel::getChild(int index)
+{
+    return NULL;
+}
+
 class SimplifiedModelFactory : public ProcessorControlFactory
 {
 public:

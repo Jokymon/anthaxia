@@ -2,7 +2,6 @@
 #define _MIPSMODEL_H
 
 #include "Simulator.h"
-#include "model/SystemOnChip.h"
 #include "plugins/Plugin.h"
 #include "plugins/processor/ProcessorControl.h"
 #include <string>
@@ -15,7 +14,7 @@ class MemoryObserver;
 class SimulatorThread;
 class SimulationObserver;
 
-class MipsModel : public ProcessorControl, public ProcessorModel, public SystemOnChip
+class MipsModel : public ProcessorControl, public ProcessorModel
 {
 public:
     MipsModel();

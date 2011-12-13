@@ -6,13 +6,14 @@
 class Processor : public SimulationObject
 {
 public:
-    Processor(std::string _name);
+    Processor(std::string _name, SimulationObject* _parent);
+
+    virtual void accept(SimulationObjectVisitor& visitor);
 
     virtual void run() =0;
     virtual void step() =0;
     virtual void stop() =0;
     virtual void reset() =0;
-
 
 public: // signals
     sigslot::signal0<> SimulationStarted;

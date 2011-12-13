@@ -24,6 +24,7 @@ private slots:
     void addMemoryViewDockWidget();
     void addRegisterViewDockWidget();
     void addConsoleDockWidget();
+    void addModelTreeWidget();
 
     void handleSimulationStarted();
     void handleSimulationStopped();
