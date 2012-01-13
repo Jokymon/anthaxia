@@ -2,10 +2,11 @@
 
 MethodList* $classname::getMethodList()
 {
-    CREATE_METHOD_LIST(list, ${len($functions)})
+    CREATE_METHOD_LIST(list, ${len(list($functions))})
 #for ($idx, $fn) in enumerate($functions)
-    SET_LIST_ITEM(list, $idx, "$fn.name", "$fn.signature", "$fn.return_type[1]")
+    SET_LIST_ITEM(list, $idx, "$fn.name", "$fn.signature()", "$fn.return_type[1]")
 #end for
+
     return list;
 }
 

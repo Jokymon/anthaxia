@@ -7,13 +7,26 @@ import re, tpg
 class Class:
     def __init__(self, name):
         self.name = name
-        self.functions = []
+        self.functions = {}
+
+    def add_function(self, func):
+        if not func.name in self.functions.keys():
+            self.functions[ func.name ] = {}
+        self.functions[ func.name ][ func.signature() ] = func
+
+    def all_functions(self):
+        for fns in self.functions.values():
+            for fn in fns.values():
+                yield fn
 
 class Function:
     def __init__(self, name):
         self.name = name
         self.return_type = None
         self.parameter_types = []
+
+    def signature(self):
+        return "".join( map(lambda x: x[1], self.parameter_types) )
 
 class UnknownTypeException(Exception):
     def __init__(self, t):
@@ -31,7 +44,7 @@ class SSIParser(tpg.Parser):
         START/s ->
             'class' identifier/i        $ s = Class(i)
             (
-                FUNCTION_DEF/f          $ s.functions.append( f )
+                FUNCTION_DEF/f          $ s.add_function( f )
             )*
             'end'
             ;
@@ -73,12 +86,9 @@ def generate_cheetah(cls):
     src_template = "".join(src_template)
     inp.close()
 
-    for fn in cls.functions:
-        fn.signature = "".join( map(lambda x: x[1], fn.parameter_types) )
-
     nameSpace = {
         'classname' : cls.name,
-        'functions' : cls.functions,
+        'functions' : cls.all_functions,
     }
 
     templ = Template( src_template, searchList = [nameSpace] )
