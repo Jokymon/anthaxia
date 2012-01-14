@@ -75,6 +75,8 @@ SET(CORE_SRCS
     include/plugins/Plugin.h
     include/plugins/processor/MemoryInterface.h
     include/plugins/processor/ProcessorControl.h
+
+    ${CMAKE_BINARY_DIR}/static_plugins.h
 )
 
 IF (UNIX)
