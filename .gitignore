@@ -1,4 +1,5 @@
 *.swp
+*.pyc
 gmock.zip
 build_mingw/
 packages/
