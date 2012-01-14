@@ -32,12 +32,21 @@ SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
 SET(POCO_INCLUDE_PATH "" CACHE PATH "Path to the Poco include files directory" )
 SET(POCO_LIBRARY_PATH "" CACHE PATH "Path to the Poco library files directory" )
 
+# TODO: This is a bit annoying, I would like to refactor PsUI so that the main
+# application doesn't need to include Qt headers
+INCLUDE(FindQt4)
+IF (NOT QT4_FOUND)
+	MESSAGE( FATAL_ERROR "QT4 is necessary")
+ENDIF()
+INCLUDE(UseQt4)
+
 ###########################################################
 # Main
 ADD_SUBDIRECTORY(tools)
 ADD_SUBDIRECTORY(model)
 ADD_SUBDIRECTORY(plugins)
 ADD_SUBDIRECTORY(servicesystem)
+ADD_SUBDIRECTORY(qt)
 
 SET(CORE_SRCS_WINDOWS
     platform/windows/DynamicLibrary.cpp
@@ -105,71 +114,6 @@ SET(ELFIO_SRCS
     plugins/elfloader/ELFTypes.h
 )
 
-##############################################################
-# UI sources
-
-SET(UI_SRCS
-    qt/PsUI.cpp
-    qt/PsMainWindow.cpp
-    qt/PsMemoryObserver.cpp
-    qt/PsMemView.cpp
-    qt/PsModelControl.cpp
-    qt/PsPluginInfoDlg.cpp
-    qt/PsProcChooserDlg.cpp
-    qt/PsRegisterView.cpp
-
-    qt/PsUI.h
-    qt/PsMainWindow.h
-    qt/PsMemoryObserver.h
-    qt/PsMemView.h
-    qt/PsModelControl.h
-    qt/PsPluginInfoDlg.h
-    qt/PsProcChooserDlg.h
-    qt/PsRegisterView.h
-
-    qt/console/interceptor.cpp
-    #qt/console/pymemoryproxy.cpp
-    qt/console/qpluginconsole.cpp
-
-    qt/console/interceptor.h
-    #qt/console/pymemoryproxy.h
-    qt/console/qpluginconsole.h
-
-    ${CMAKE_BINARY_DIR}/PsUI.moc
-    ${CMAKE_BINARY_DIR}/PsMainWindow.moc
-    ${CMAKE_BINARY_DIR}/PsMemoryObserver.moc
-    ${CMAKE_BINARY_DIR}/PsMemView.moc
-    ${CMAKE_BINARY_DIR}/PsModelControl.moc
-    ${CMAKE_BINARY_DIR}/PsRegisterView.moc
-    ${CMAKE_BINARY_DIR}/PsPluginInfoDlg.moc
-    ${CMAKE_BINARY_DIR}/PsProcChooserDlg.moc
-
-    ${CMAKE_BINARY_DIR}/interceptor.moc
-    ${CMAKE_BINARY_DIR}/qpluginconsole.moc
-
-    ${CMAKE_BINARY_DIR}/static_plugins.h
-)
-
-##############################################################
-
-INCLUDE(FindQt4)
-IF (NOT QT4_FOUND)
-	MESSAGE( FATAL_ERROR "QT4 is necessary")
-ENDIF()
-INCLUDE(UseQt4)
-LINK_LIBRARIES(${QT_LIBRARIES})
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsUI.h              ${CMAKE_BINARY_DIR}/PsUI.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsMainWindow.h      ${CMAKE_BINARY_DIR}/PsMainWindow.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsMemoryObserver.h  ${CMAKE_BINARY_DIR}/PsMemoryObserver.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsMemView.h         ${CMAKE_BINARY_DIR}/PsMemView.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsModelControl.h    ${CMAKE_BINARY_DIR}/PsModelControl.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsRegisterView.h    ${CMAKE_BINARY_DIR}/PsRegisterView.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsPluginInfoDlg.h   ${CMAKE_BINARY_DIR}/PsPluginInfoDlg.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/PsProcChooserDlg.h  ${CMAKE_BINARY_DIR}/PsProcChooserDlg.moc)
-
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/console/interceptor.h   ${CMAKE_BINARY_DIR}/interceptor.moc)
-QT4_GENERATE_MOC(${CMAKE_SOURCE_DIR}/qt/console/qpluginconsole.h      ${CMAKE_BINARY_DIR}/qpluginconsole.moc)
-
 #################################################
 # Instructions for building the main application
 
@@ -191,11 +135,12 @@ LINK_DIRECTORIES( ${POCO_LIBRARY_PATH} )
 LINK_LIBRARIES( 
     PocoFoundation
     PocoUtil
+    gui
     servicesystem
 )
 
 ADD_EXECUTABLE( procsim 
-    ${CORE_SRCS} ${ELFIO_SRCS} ${UI_SRCS}
+    ${CORE_SRCS} ${ELFIO_SRCS}
 )
 
 ADD_CUSTOM_COMMAND(
