@@ -85,7 +85,7 @@ void append_double(MarshaledData* meth, double value)
     meth->typelistsize += 1;
 }
 
-void append_string(MarshaledData* meth, char* value)
+void append_string(MarshaledData* meth, const char* value)
 {
     size_t len = strlen(value)+1;
     // Make sure the buffer has enough space to add the given string

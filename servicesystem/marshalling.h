@@ -53,7 +53,7 @@ MarshaledData* create_method_call();
 void free_method_call(MarshaledData* meth);
 void append_int(MarshaledData* meth, int value);
 void append_double(MarshaledData* meth, double value);
-void append_string(MarshaledData* meth, char* value);
+void append_string(MarshaledData* meth, const char* value);
 void append_proxy_object(MarshaledData* meth, ProxyObject value);
 
 /****************************************************************
