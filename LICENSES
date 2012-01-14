@@ -1,0 +1,11 @@
+Anthaxia is distributed under the terms of the GPL version 3, see the file COPYING for the details.
+
+Anthaxia also contains code with the following licenses:
+
+The Qt console component was written by Houssem Bdioui and provided under the terms of the GNU GPL version 2. It comes with modifications by Silvan Wegmann.
+
+The interceptor part of the Qt console was written by Kuba Ober and provided under the terms of a public domain license.
+
+The plugin for loading ELF files is based on the ELFIO library implemented by Serge Lamikhov-Center and is provided under the terms of GNU GPL version 2.1
+
+The sigslot library is written by Sarah Thompson and provided under the terms ofa public domain license.
