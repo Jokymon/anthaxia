@@ -44,6 +44,9 @@ IF(NOT UNIX) # Windows MS VC compiler specific
     TARGET_LINK_LIBRARIES( pythonshell procsim.dll )
     ADD_DEPENDENCIES(pythonshell procsim )
 ENDIF()
+IF(MINGW)
+    SET_TARGET_PROPERTIES( pythonshell PROPERTIES LINK_FLAGS "-Wl,--enable-auto-import" )
+ENDIF()
 
 IF(WIN32)
 TARGET_LINK_LIBRARIES( pythonshell ${POCO_LIBRARY_PATH}/libPocoFoundation.dll )
