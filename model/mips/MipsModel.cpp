@@ -9,6 +9,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "model/DummyRegister.h"
+
 using Poco::Runnable;
 using Poco::Thread;
 
@@ -1122,12 +1124,15 @@ int MipsModel::parentIndex()
 
 int MipsModel::childCount()
 {
-    return 0;
+    return 1;
 }
 
 SimulationObject* MipsModel::getChild(int index)
 {
-    return NULL;
+    if (index==0)
+        return new DummyRegister("DummyRegister", this);
+    else
+        return NULL;
 }
 
 class MipsModelFactory : public ProcessorControlFactory

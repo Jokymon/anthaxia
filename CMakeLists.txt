@@ -40,6 +40,9 @@ SET(CORE_SRCS
     model/SystemOnChip.h
     model/Processor.cpp
     model/Processor.h
+    model/DummyRegister.cpp
+    model/DummyRegister.h
+
     platform/DynamicLibrary.h
 
     plugins/PluginManager.cpp

@@ -22,17 +22,25 @@ QVariant PsSimulationModel::data(const QModelIndex &index, int role) const
 QModelIndex PsSimulationModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!hasIndex(row, column, parent))
+    {
         return QModelIndex();
+    }
 
-    SimulationObject* parentItem;
+    SimulationObject* parentItem = 0;
 
     if (!parent.isValid())
+    {
         parentItem = root;
+    }
     else
+    {
         parentItem = static_cast<SimulationObject*>(parent.internalPointer());
+    }
 
     if (!parentItem)
+    {
         return QModelIndex();
+    }
 
     SimulationObject* childItem = parentItem->getChild(row);
     if (childItem)
@@ -44,13 +52,17 @@ QModelIndex PsSimulationModel::index(int row, int column, const QModelIndex &par
 QModelIndex PsSimulationModel::parent(const QModelIndex &index) const
 {
     if (!index.isValid())
+    {
         return QModelIndex();
+    }
 
     SimulationObject* childItem = static_cast<SimulationObject*>(index.internalPointer());
     SimulationObject* parentItem = childItem->getParent();
 
     if (parentItem == root)
+    {
         return QModelIndex();
+    }
 
     return createIndex(parentItem->parentIndex(), 0, parentItem);
 }
@@ -64,19 +76,35 @@ int PsSimulationModel::rowCount(const QModelIndex &parent) const
 {
     SimulationObject* parentItem;
     if (parent.column() > 0)
+    {
         return 0;
+    }
 
     if (!parent.isValid())
+    {
         parentItem = root;
+    }
     else
+    {
         parentItem = static_cast<SimulationObject*>(parent.internalPointer());
+    }
 
     if (!parentItem)
+    {
         return 0;
+    }
 
     return parentItem->childCount();
 }
     
+Qt::ItemFlags PsSimulationModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return 0;
+
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
 void PsSimulationModel::setRootObject(SimulationObject* _root)
 {
     root = _root;

@@ -6,6 +6,8 @@
 #include "PsSimulationModel.h"
 #include "Logging/Logging.h"
 #include "Settings/Settings.h"
+#include "model/SimulationObject.h"
+#include "plugins/processor/ProcessorControl.h"
 #include "console/qpluginconsole.h"
 
 #include <QtGlobal>
@@ -248,7 +250,7 @@ void PsMainWindow::addModelTreeWidget()
     QTreeView* qtv = new QTreeView(modelDockWidget);
     qtv->setHeaderHidden(true);
     PsSimulationModel* model = new PsSimulationModel;
-    //model->setRootObject(mips);
+    model->setRootObject( mModelControl.getProcessor() );
     qtv->setModel(model);
 
     modelDockWidget->setWidget(qtv);
