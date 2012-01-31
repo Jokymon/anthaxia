@@ -26,6 +26,7 @@ public:
     SimulationObject* find(std::string name);
 
     SimulationObject* getParent();
+    void setParent(SimulationObject* _parent);
     virtual int parentIndex() =0;
     virtual SimulationObject* getChild(int index) =0;
     virtual int childCount() =0;

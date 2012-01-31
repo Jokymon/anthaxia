@@ -23,3 +23,8 @@ SimulationObject* SimulationObject::getParent()
     return parent;
 }
 
+void SimulationObject::setParent(SimulationObject* _parent)
+{
+    parent = _parent;
+}
+
