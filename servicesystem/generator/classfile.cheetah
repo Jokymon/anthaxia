@@ -1,0 +1,33 @@
+\#include "${classname}.h"
+
+MethodList* $classname::getMethodList()
+{
+    CREATE_METHOD_LIST(list, ${len(list($functions))})
+#for ($idx, $fn) in enumerate($functions)
+    SET_LIST_ITEM(list, $idx, "$fn.name", "$fn.signature()", "$fn.return_type[1]")
+#end for
+
+    return list;
+}
+
+CallResult $classname::callMethod(char* method, MarshaledData* arguments, MarshaledData** result)
+{
+    CallResult call_result = CALL_UNKNOWN_NAME;
+    MarshallParser* parser = create_parser(arguments);
+
+#for ($idx, $fn) in enumerate($functions)
+#if $idx == 0
+    if (strncmp(method, "$fn.name", $len($fn.name))==0)
+#else
+    } else if (strncmp(method, "$fn.name", $len($fn.name))==0)
+#end if
+    {
+        call_result = CALL_OK;
+        // TODO: add client code
+#end for
+    }
+
+clean_up:
+    free_parser(parser);
+    return call_result;
+}
