@@ -27,6 +27,8 @@
 #include <vector>
 #ifdef _MSC_VER
 #include "platform/windows/stdint.h"
+#else
+#include <stdint.h>
 #endif
 
 class SimulatorThread;
