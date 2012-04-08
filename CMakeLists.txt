@@ -58,18 +58,6 @@ SET(CORE_SRCS_LINUX
 
 SET(CORE_SRCS
     main.cpp
-    model/ModelControl.cpp
-    model/ModelControl.h
-    model/SimulationObject.cpp
-    model/SimulationObject.h
-    model/SimulationObjectVisitor.cpp
-    model/SystemOnChip.cpp
-    model/SystemOnChip.h
-    model/Processor.cpp
-    model/Processor.h
-    model/DummyRegister.cpp
-    model/DummyRegister.h
-
     platform/DynamicLibrary.h
 
     plugins/PluginManager.cpp
@@ -147,6 +135,7 @@ LINK_DIRECTORIES( ${POCO_LIBRARY_PATH} )
 LINK_LIBRARIES( 
     PocoFoundation
     PocoUtil
+    model
     gui
     servicesystem
 )

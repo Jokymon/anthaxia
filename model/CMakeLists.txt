@@ -19,3 +19,32 @@
 
 ADD_SUBDIRECTORY(mips)
 ADD_SUBDIRECTORY(simplemodel)
+
+SET(MODEL_SRCS
+    ModelControl.cpp
+    ModelControl.h
+    SimulationObject.cpp
+    SimulationObject.h
+    SimulationObjectVisitor.cpp
+    SystemOnChip.cpp
+    SystemOnChip.h
+    Processor.cpp
+    Processor.h
+    DummyRegister.cpp
+    DummyRegister.h
+)
+
+INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/tools
+    ${POCO_INCLUDE_PATH}
+)
+
+LINK_DIRECTORIES( ${POCO_LIBRARY_PATH} )
+LINK_LIBRARIES(
+    PocoFoundation
+    PocoUtil
+)
+
+ADD_LIBRARY( model ${MODEL_SRCS} )
