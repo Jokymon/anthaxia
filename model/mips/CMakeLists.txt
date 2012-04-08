@@ -30,7 +30,7 @@ INCLUDE_DIRECTORIES(
 )
 
 LINK_DIRECTORIES( ${CMAKE_BINARY_DIR} ${POCO_LIBRARY_PATH} )
-LINK_LIBRARIES( PocoFoundation PocoUtil )
+LINK_LIBRARIES( model PocoFoundation PocoUtil )
 
 ADD_LIBRARY( mips_processor SHARED ${MIPS_MODEL} )
 IF(NOT UNIX) # Windows MS VC compiler specific
