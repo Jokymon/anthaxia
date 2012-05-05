@@ -110,14 +110,14 @@ def copy_tree(src_dir, dst_dir, action=lambda src, tgt: None, filt=lambda file_n
 def install_poco(build_env):
     import pysvn, subprocess
     def notify( event_dict ):
-        print event_dict["path"]
+        print(event_dict["path"])
     s = pysvn.Client()
     s.callback_notify = notify
 
-    print "Checkout Poco..."
+    print("Checkout Poco...")
     s.checkout( "http://poco.svn.sourceforge.net/svnroot/poco/poco/trunk/", config["poco_checkout_dir"], revision=pysvn.Revision( pysvn.opt_revision_kind.number, 1676 ) )
 
-    print "Compiling Poco..."
+    print("Compiling Poco...")
     cmake_executable = find_cmake()
     current_dir = os.getcwd()
     os.chdir( config["poco_checkout_dir"] )
@@ -128,7 +128,7 @@ def install_poco(build_env):
     subprocess.call(["%s" % cmake_executable, "-G", build_environment[build_env]["cmake_generator"], ".."])
     os.system( build_environment[build_env]["build_command"] )
 
-    print "Installing Poco..."
+    print("Installing Poco...")
     from distutils.dir_util import mkpath
     import shutil
     if not os.path.exists("../../packages/lib"):
@@ -136,7 +136,7 @@ def install_poco(build_env):
     if not os.path.exists("../../packages/include"):
         mkpath("../../packages/include")
 
-    print "  installing Foundation"
+    print("  installing Foundation")
     copy_tree("../Foundation/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
     shutil.copy2("Foundation/libPocoFoundation." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
@@ -144,7 +144,7 @@ def install_poco(build_env):
     shutil.copy2("Foundation/libPocoFoundationd." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
     shutil.copy2("Foundation/libPocoFoundationd." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
-    print "  installing Data"
+    print("  installing Data")
     copy_tree("../Data/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
     shutil.copy2("Data/libPocoData." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
@@ -152,7 +152,7 @@ def install_poco(build_env):
     shutil.copy2("Data/libPocoDatad." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
     shutil.copy2("Data/libPocoDatad." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
-    print "  installing Util"
+    print("  installing Util")
     copy_tree("../Util/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
     shutil.copy2("Util/libPocoUtil." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
@@ -160,7 +160,7 @@ def install_poco(build_env):
     shutil.copy2("Util/libPocoUtild." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
     shutil.copy2("Util/libPocoUtild." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
-    print "  installing Net"
+    print("  installing Net")
     copy_tree("../Net/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
     shutil.copy2("Net/libPocoNet." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
@@ -168,7 +168,7 @@ def install_poco(build_env):
     shutil.copy2("Net/libPocoNetd." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
     shutil.copy2("Net/libPocoNetd." + build_environment[build_env]["lib_suffix2"], "../../packages/lib")
 
-    print "  installing XML"
+    print("  installing XML")
     copy_tree("../XML/include", "../../packages/include", 
         filt = lambda f: ".svn" not in f)
     shutil.copy2("XML/libPocoXML." + build_environment[build_env]["lib_suffix"], "../../packages/lib")
@@ -179,17 +179,24 @@ def install_poco(build_env):
     os.chdir( current_dir )
 
 def install_gmock(build_env):
-    import urllib, zipfile, subprocess
+    import urllib, zipfile, subprocess, sys
+    if sys.version_info[0]==2:
+        from urllib import urlretrieve
+    elif sys.version_info[0]==3:
+        from urllib.request import urlretrieve
+    else:
+        print("ERROR: Don't know where to get function 'urlretrieve' from. Stopping installation of GMock")
+        return
 
-    print "Downloading GMock..."
-    urllib.urlretrieve( config["gmock_download_url"], "gmock.zip" )
+    print("Downloading GMock...")
+    urlretrieve( config["gmock_download_url"], "gmock.zip" )
     zf = zipfile.ZipFile( "gmock.zip", "r" )
     for n in zf.namelist():
-        print n
+        print(n)
         # TODO: Implement a more Python 2.5 friendly version
         zf.extract( n )
 
-    print "Compiling GMock..."
+    print("Compiling GMock...")
     cmake_executable = find_cmake()
     current_dir = os.getcwd()
     os.chdir( config["gmock_unzip_dir"] )
@@ -203,7 +210,7 @@ def install_gmock(build_env):
          ".."])
     os.system( build_environment[build_env]["build_command"] )
 
-    print "Installing GMock..."
+    print("Installing GMock...")
     from distutils.dir_util import mkpath
     import shutil
     if not os.path.exists("../../packages/lib"):
