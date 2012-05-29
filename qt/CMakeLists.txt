@@ -17,6 +17,8 @@
 #
 ########################################################################
 
+ADD_SUBDIRECTORY(test)
+
 INCLUDE(FindQt4)
 IF (NOT QT4_FOUND)
 	MESSAGE( FATAL_ERROR "QT4 is necessary")
