@@ -57,6 +57,8 @@ build_environment = {
 }
 
 def detect_build_environment():
+    if os.name=="posix":
+        return "Linux"
     for path in os.environ["PATH"].split(os.pathsep):
         vc = os.path.join(path, "cl.exe")
         mingw = os.path.join(path, "mingw32-make.exe")
@@ -65,8 +67,6 @@ def detect_build_environment():
             return "MinGW"
         if os.path.exists( cygwin ):
             return "Cygwin"
-        if os.name=="posix":
-            return "Linux"
     return None
 
 def find_cmake():
