@@ -28,15 +28,6 @@
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Path.h"
-#include "Poco/Util/LoggingConfigurator.h"
-#include "Poco/Util/MapConfiguration.h"
-#include "Poco/Util/PropertyFileConfiguration.h"
-
-using Poco::Path;
-using Poco::Util::LoggingConfigurator;
-using Poco::Util::AbstractConfiguration;
-using Poco::Util::MapConfiguration;
-using Poco::Util::PropertyFileConfiguration;
 
 //#ifdef _WIN32
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR lpCmdLine, int nShowCmd)
@@ -63,17 +54,6 @@ int main(int argc, char *argv[])
     theApp->run();
 
     // TODO: parse arguments and were applicable change application settings
-
-	Poco::AutoPtr<AbstractConfiguration> pConfig;
-    if (Path("logging.cfg").isFile())
-    {
-        pConfig = new PropertyFileConfiguration("logging.cfg");
-    } else
-    {
-        pConfig = new MapConfiguration();
-    }
-	LoggingConfigurator configurator;
-	configurator.configure(pConfig);
 
     PluginManager::init(theUI.getApplicationDirPath());
     // Make sure the model control is instantiated
