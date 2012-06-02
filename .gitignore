@@ -1,6 +1,7 @@
 *.swp
 *.pyc
 gmock.zip
+build/
 build_mingw/
 packages/
 gmock-1.6.0/
