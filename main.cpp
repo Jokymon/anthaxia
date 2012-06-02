@@ -17,6 +17,7 @@
  *
  ***********************************************************************/
 
+#include "AnthaxiaApp.h"
 #include "qt/PsUI.h"
 #include "plugins/PluginManager.h"
 #include "servicesystem/serviceprovider.h"
@@ -43,6 +44,7 @@ using Poco::Util::PropertyFileConfiguration;
 int main(int argc, char *argv[])
 //#endif
 {
+	Poco::AutoPtr<AnthaxiaApp> theApp = new AnthaxiaApp;
     PsUI theUI;
 
     Settings::loadSettings("procsim.rc");
@@ -52,6 +54,13 @@ int main(int argc, char *argv[])
 //#else
     theUI.parseArgs(argc, argv);
 //#endif
+
+    try {
+        theApp->init(argc, argv);
+    }
+    catch (Poco::Exception& exc) {
+    	theApp->logger().log(exc);
+    }
 
     // TODO: parse arguments and were applicable change application settings
 
