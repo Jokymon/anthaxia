@@ -19,6 +19,10 @@
 
 #include "AnthaxiaApp.h"
 #include "Settings/Settings.h"
+#include "plugins/PluginManager.h"
+#include "servicesystem/serviceprovider.h"
+#include "servicesystem/ModelControlService.h"
+#include "model/ModelControl.h"
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Path.h"
@@ -46,4 +50,11 @@ void AnthaxiaApp::initialize(Application& self) {
     }
     LoggingConfigurator configurator;
     configurator.configure(pConfig);
+
+    PluginManager::init( config().getString("application.dir", ".") );
+    // Make sure the model control is instantiated
+    (void)ModelControl::getInstance();
+    // Make sure the service system is present
+    (void)ServiceSystem::getServiceSystem();
+    registerModelControlService();
 }

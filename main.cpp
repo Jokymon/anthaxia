@@ -19,15 +19,9 @@
 
 #include "AnthaxiaApp.h"
 #include "qt/PsUI.h"
-#include "plugins/PluginManager.h"
-#include "servicesystem/serviceprovider.h"
-#include "servicesystem/ModelControlService.h"
-#include "model/ModelControl.h"
-#include "Logging/Logging.h"
 #include "Settings/Settings.h"
 
 #include "Poco/AutoPtr.h"
-#include "Poco/Path.h"
 
 //#ifdef _WIN32
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR lpCmdLine, int nShowCmd)
@@ -54,13 +48,6 @@ int main(int argc, char *argv[])
     theApp->run();
 
     // TODO: parse arguments and were applicable change application settings
-
-    PluginManager::init(theUI.getApplicationDirPath());
-    // Make sure the model control is instantiated
-    (void)ModelControl::getInstance();
-    // Make sure the service system is present
-    (void)ServiceSystem::getServiceSystem();
-    registerModelControlService();
 
     theUI.install();
     theUI.loop();
