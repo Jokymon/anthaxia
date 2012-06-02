@@ -25,6 +25,8 @@
 class AnthaxiaApp : public Poco::Util::Application
 {
 public:
+protected:
+	void initialize(Application& self);
 
 private:
 };

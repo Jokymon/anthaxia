@@ -18,3 +18,9 @@
  ***********************************************************************/
 
 #include "AnthaxiaApp.h"
+#include "Settings/Settings.h"
+
+void AnthaxiaApp::initialize(Application& self) {
+    Application::initialize(self);
+    Settings::loadSettings("procsim.rc");
+}

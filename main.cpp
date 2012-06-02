@@ -47,8 +47,6 @@ int main(int argc, char *argv[])
 	Poco::AutoPtr<AnthaxiaApp> theApp = new AnthaxiaApp;
     PsUI theUI;
 
-    Settings::loadSettings("procsim.rc");
-
 //#ifdef _WIN32
 //    theUI.parseArgs(__argc, __argv);
 //#else
@@ -61,6 +59,8 @@ int main(int argc, char *argv[])
     catch (Poco::Exception& exc) {
     	theApp->logger().log(exc);
     }
+
+    theApp->run();
 
     // TODO: parse arguments and were applicable change application settings
 

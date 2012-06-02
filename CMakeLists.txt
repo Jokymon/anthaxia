@@ -64,6 +64,7 @@ SET(CORE_SRCS_LINUX
 
 SET(CORE_SRCS
     main.cpp
+    AnthaxiaApp.cpp
     model/ModelControl.cpp
     model/ModelControl.h
     platform/DynamicLibrary.h
