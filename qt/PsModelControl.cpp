@@ -23,6 +23,7 @@
 #include "plugins/PluginManager.h"
 #include "model/ModelControl.h"
 #include "elfloader/PsElfLoader.h"
+#include "Poco/Util/Application.h"
 
 #include <iostream>
 
@@ -49,8 +50,10 @@ QStringList PsModelControl::getProcessorList() const
 {
     QStringList processorModels;
 
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+
     std::list<std::string> l = 
-        PluginManager::getInstance()->getProcessorList();
+        plugin_manager.getProcessorList();
     for (std::list<std::string>::const_iterator it=l.begin();
          it != l.end();
          ++it)

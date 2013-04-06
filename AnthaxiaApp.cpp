@@ -37,7 +37,6 @@ using Poco::Util::MapConfiguration;
 using Poco::Util::PropertyFileConfiguration;
 
 void AnthaxiaApp::initialize(Application& self) {
-    Application::initialize(self);
     Settings::loadSettings("procsim.rc");
 
     Poco::AutoPtr<AbstractConfiguration> pConfig;
@@ -51,10 +50,13 @@ void AnthaxiaApp::initialize(Application& self) {
     LoggingConfigurator configurator;
     configurator.configure(pConfig);
 
-    PluginManager::init( config().getString("application.dir", ".") );
+    addSubsystem( new PluginManager() );
+
     // Make sure the model control is instantiated
     (void)ModelControl::getInstance();
     // Make sure the service system is present
     (void)ServiceSystem::getServiceSystem();
     registerModelControlService();
+
+    Application::initialize(self);
 }

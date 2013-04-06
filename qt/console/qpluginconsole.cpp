@@ -17,6 +17,7 @@
 
 #include "qpluginconsole.h"
 // TODO: For testing:
+#include "Poco/Util/Application.h"
 #include "plugins/PluginManager.h"
 
 #include <QFile>
@@ -78,7 +79,8 @@ QPluginConsole::QPluginConsole(QWidget *parent, const char *name, bool initInter
 
     // TODO: This is only for testing purposes, the shell to be used should be
     // set somewhere else in the future
-    scriptEngine = PluginManager::getInstance()->createScriptEngine("PythonShell");
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+    scriptEngine = plugin_manager.createScriptEngine("PythonShell");
     scriptEngine->init(this);
 
     // initialize according to pointer to script engine

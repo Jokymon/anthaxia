@@ -19,6 +19,7 @@
 
 #include "PsPluginInfoDlg.h"
 #include "plugins/PluginManager.h"
+#include "Poco/Util/Application.h"
 #include <QtGui>
 #include <iostream>
 
@@ -63,9 +64,9 @@ PsPluginInfoDlg::PsPluginInfoDlg(QWidget* parent)
 
 void PsPluginInfoDlg::fillPluginList()
 {
-    PluginManager* pm = PluginManager::getInstance();
-    for (std::vector<PluginInformationBlock>::iterator iter = pm->pluginsBegin();
-         iter != pm->pluginsEnd();
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+    for (std::vector<PluginInformationBlock>::iterator iter = plugin_manager.pluginsBegin();
+         iter != plugin_manager.pluginsEnd();
          ++iter)
     {
         /* For each plugin check if its category is already available as a root

@@ -21,6 +21,7 @@
 #include "static_plugins.h"
 #include "Logging/Logging.h"
 #include "platform/DynamicLibrary.h"
+#include "Poco/Util/Application.h"
 #include "Poco/DirectoryIterator.h"
 #include "Poco/Glob.h"
 #include "Poco/Path.h"
@@ -30,13 +31,8 @@
 
 DEFINE_STATIC_LOGGER("core.PluginManager");
 
-PluginManager* PluginManager::pInstance = 0;
-
-PluginManager::PluginManager(std::string base_path)
-: mPluginsPath(base_path)
+PluginManager::PluginManager()
 {
-    this->loadStaticPlugins();
-    this->loadDynamicPlugins();
 }
 
 void PluginManager::loadStaticPlugins()
@@ -45,10 +41,10 @@ void PluginManager::loadStaticPlugins()
     LOAD_STATIC_PLUGINS(this);
 }
 
-void PluginManager::loadDynamicPlugins()
+void PluginManager::loadDynamicPlugins(std::string& plugins_path)
 {
     LOG_DEBUG("Loading dynamic plugins");
-    Poco::Path plugin_directory = Poco::Path::forDirectory(mPluginsPath);
+    Poco::Path plugin_directory = Poco::Path::forDirectory(plugins_path);
     plugin_directory.popDirectory();
     plugin_directory.pushDirectory("plugins");
     LOG_DEBUG("Plugin directory: " << plugin_directory.toString());
@@ -79,18 +75,16 @@ void PluginManager::loadDynamicPlugins()
 
 }
 
-void PluginManager::init(std::string base_path)
+void PluginManager::initialize(Poco::Util::Application& app)
 {
-    pInstance = new PluginManager(base_path);
+    LOG_DEBUG("Initializing PluginManager");
+    this->loadStaticPlugins();
+    std::string loading_path = app.config().getString("application.dir", ".");
+    this->loadDynamicPlugins( loading_path );
 }
 
-PluginManager* PluginManager::getInstance()
+void PluginManager::uninitialize()
 {
-    if (pInstance == 0)
-    {
-        pInstance = new PluginManager(".");
-    }
-    return pInstance;
 }
 
 std::vector<PluginInformationBlock>::iterator PluginManager::pluginsBegin()

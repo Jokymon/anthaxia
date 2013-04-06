@@ -23,6 +23,7 @@
 #include "plugins/processor/ProcessorControlUpdateInterface.h"
 #include "plugins/PluginManager.h"
 
+#include "Poco/Util/Application.h"
 #include "Poco/Path.h"
 
 #include <iostream>
@@ -56,7 +57,8 @@ ModelControl::~ModelControl()
 void ModelControl::loadModel(const std::string& modelname)
 {
     LOG_DEBUG("Trying to create model instance " << modelname);
-    ProcessorControl* temp = PluginManager::getInstance()->createProcessorControl(modelname);
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+    ProcessorControl* temp = plugin_manager.createProcessorControl(modelname);
     if (temp)
     {
         LOG_DEBUG("Successfully created instance " << modelname);
@@ -72,8 +74,8 @@ std::vector<std::string> ModelControl::getProcessorList() const
 {
     std::vector<std::string> processorModels;
 
-    std::list<std::string> l = 
-        PluginManager::getInstance()->getProcessorList();
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+    std::list<std::string> l = plugin_manager.getProcessorList();
     for (std::list<std::string>::const_iterator it=l.begin();
          it != l.end();
          ++it)
@@ -223,7 +225,8 @@ std::string ModelControl::disassembleInstruction(int address) const
 void ModelControl::loadImage(const std::string& fileName)
 {
     Poco::Path path(fileName);
-    ImageLoader* loader = PluginManager::getInstance()->createImageLoader(path.getExtension());
+    PluginManager& plugin_manager = Poco::Util::Application::instance().getSubsystem<PluginManager>();
+    ImageLoader* loader = plugin_manager.createImageLoader(path.getExtension());
     if (loader)
     {
         LOG_DEBUG("Found an image loader plugin for suffix " << path.getExtension());

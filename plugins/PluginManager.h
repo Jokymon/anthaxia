@@ -24,18 +24,22 @@
 #include "plugins/ImageLoader.h"
 #include "plugins/ScriptEngine.h"
 #include "plugins/processor/ProcessorControl.h"
+#include "Poco/Util/Subsystem.h"
 #include <list>
 #include <map>
 #include <string>
 
 #define STATIC_PLUGIN_INIT extern "C"
 
-class PluginManager
+class PluginManager : public Poco::Util::Subsystem
 {
 public:
     /* generic plugin user interface */
-    static void init(std::string base_path);
-    static PluginManager* getInstance();
+    PluginManager();
+
+    const char* name() const { return "PluginManager"; }
+    void initialize(Poco::Util::Application& app);
+    void uninitialize();
 
     std::vector<PluginInformationBlock>::iterator pluginsBegin();
     std::vector<PluginInformationBlock>::iterator pluginsEnd();
@@ -55,9 +59,8 @@ public:
     void registerScriptEngine(std::string name, ScriptEngineFactory* factory, PluginInformationBlock info);
 
 private:
-    PluginManager(std::string base_path);
     void loadStaticPlugins();
-    void loadDynamicPlugins();
+    void loadDynamicPlugins(std::string& plugins_path);
 
     typedef std::map<std::string, ProcessorControlFactory*> ProcessorRegistry;
     ProcessorRegistry mProcessorFactories;
@@ -67,8 +70,6 @@ private:
     ScriptEngineRegistry mScriptEngineFactories;
     std::vector<PluginInformationBlock> mPluginInfoList;
 
-    std::string mPluginsPath;
-    
     static PluginManager* pInstance;
 };
 
