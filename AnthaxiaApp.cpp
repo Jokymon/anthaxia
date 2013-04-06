@@ -23,6 +23,9 @@
 #include "servicesystem/serviceprovider.h"
 #include "servicesystem/ModelControlService.h"
 #include "model/ModelControl.h"
+#include "qt/PsUI.h"
+
+#include "Logging/Logging.h"
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Path.h"
@@ -50,6 +53,9 @@ void AnthaxiaApp::initialize(Application& self) {
     LoggingConfigurator configurator;
     configurator.configure(pConfig);
 
+    Poco::LogStream log_stream(Poco::Logger::get("core.AnthaxiaApp"));
+    LOG_DEBUG("Logging initialized; continue initialization of the rest");
+
     addSubsystem( new PluginManager() );
 
     // Make sure the model control is instantiated
@@ -59,4 +65,27 @@ void AnthaxiaApp::initialize(Application& self) {
     registerModelControlService();
 
     Application::initialize(self);
+}
+
+void AnthaxiaApp::uninitialize() {
+    Poco::LogStream log_stream(Poco::Logger::get("core.AnthaxiaApp"));
+    LOG_DEBUG("Uninitializing the application");
+
+    Settings::saveSettings("procsim.rc");
+}
+
+int AnthaxiaApp::main(const std::vector<std::string>& args) {
+    PsUI theUI;
+
+    // TODO: This is so ugly at the moment. How can I pass the necessary
+    // arguments to the Qt application object??
+    int argc = 0;
+    char *argv[] = {""};
+
+    theUI.parseArgs(argc, argv);
+    theUI.install();
+    theUI.loop();
+    theUI.uninstall();
+
+    return EXIT_OK;
 }

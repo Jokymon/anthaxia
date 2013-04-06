@@ -21,12 +21,16 @@
 #define _ANTHAXIAAPP_H
 
 #include "Poco/Util/Application.h"
+#include <vector>
+#include <string>
 
 class AnthaxiaApp : public Poco::Util::Application
 {
 public:
 protected:
-	void initialize(Application& self);
+    void initialize(Application& self);
+    void uninitialize();
+    virtual int main(const std::vector<std::string>& args);
 
 private:
 };

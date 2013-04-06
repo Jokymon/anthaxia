@@ -18,9 +18,6 @@
  ***********************************************************************/
 
 #include "AnthaxiaApp.h"
-#include "qt/PsUI.h"
-#include "Settings/Settings.h"
-
 #include "Poco/AutoPtr.h"
 
 //#ifdef _WIN32
@@ -30,13 +27,6 @@ int main(int argc, char *argv[])
 //#endif
 {
 	Poco::AutoPtr<AnthaxiaApp> theApp = new AnthaxiaApp;
-    PsUI theUI;
-
-//#ifdef _WIN32
-//    theUI.parseArgs(__argc, __argv);
-//#else
-    theUI.parseArgs(argc, argv);
-//#endif
 
     try {
         theApp->init(argc, argv);
@@ -46,14 +36,6 @@ int main(int argc, char *argv[])
     }
 
     theApp->run();
-
-    // TODO: parse arguments and were applicable change application settings
-
-    theUI.install();
-    theUI.loop();
-    theUI.uninstall();
-
-    Settings::saveSettings("procsim.rc");
 
     return 0;
 }
